@@ -1,0 +1,10 @@
+{
+	"dev": {
+		"token": "NzAzNjYxMDI3OTg3ODE2NDQ4.XsNwAQ.4W53OuO5_e2ZO4pVPyP-gjX3MZI",
+		"mongo": "mongodb://localhost:27017/test",
+		"prefix": "!"
+	},
+	"prod": {
+		"token": ""
+	}
+}
