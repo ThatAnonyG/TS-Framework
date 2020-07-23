@@ -10,6 +10,11 @@ export default class EMessage extends Event {
 		if (message.author.bot) return;
 		if (!message.guild) return;
 		if (!message.member) await message.guild.members.fetch(message.author);
+
+		if (!message.guild.db) message.guild._init();
+		if (!message.author.db) message.author._init();
+		if (!message.member!.db) message.member!._init();
+
 		const prefix = bot.getConfig('prefix');
 
 		// A safety check
