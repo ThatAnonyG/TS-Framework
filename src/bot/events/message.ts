@@ -1,32 +1,32 @@
-import { Event, Bot } from '../../lib';
-import { Message } from 'discord.js';
+import { BotEvent, Bot } from "../../lib";
+import { Message } from "discord.js";
 
-export default class EMessage extends Event {
-	constructor() {
-		super('message');
-	}
+export default class EMessage extends BotEvent {
+  constructor() {
+    super("message");
+  }
 
-	public async run(bot: Bot, message: Message) {
-		if (message.author.bot) return;
-		if (!message.guild) return;
-		if (!message.member) await message.guild.members.fetch(message.author);
+  public async run(bot: Bot, message: Message) {
+    if (message.author.bot) return;
+    if (!message.guild) return;
+    if (!message.member) await message.guild.members.fetch(message.author);
 
-		if (!message.guild.db) message.guild._init();
-		if (!message.author.db) message.author._init();
-		if (!message.member!.db) message.member!._init();
+    if (!message.guild.db) message.guild._init();
+    if (!message.author.db) message.author._init();
+    if (!message.member!.db) message.member!._init();
 
-		const prefix = bot.getConfig('prefix');
+    const prefix = bot.getConfig("prefix");
 
-		// A safety check
-		if (!message.guild.me!.hasPermission('SEND_MESSAGES')) return;
+    // A safety check
+    if (!message.guild.me!.hasPermission("SEND_MESSAGES")) return;
 
-		// Declaring arguments, checking if the message starts with the prefix
-		if (!message.content.startsWith(prefix)) return;
-		const args = message.content.slice(prefix.length).trim().split(/ +/g);
-		const key = args.shift()!.toLowerCase();
+    // Declaring arguments, checking if the message starts with the prefix
+    if (!message.content.startsWith(prefix)) return;
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const key = args.shift()!.toLowerCase();
 
-		// Trying to get the command
-		const command = bot.handler.getCmd(key);
-		if (command) command.run(message, args);
-	}
+    // Trying to get the command
+    const command = bot.handler.getCmd(key);
+    if (command) await command.run(message, args);
+  }
 }

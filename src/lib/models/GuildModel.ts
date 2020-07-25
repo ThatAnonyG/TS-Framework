@@ -1,9 +1,9 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const GuildSchema = new Schema({
-	id: String
+  id: String,
 });
 
-const GuildModel = model('guild', GuildSchema);
+const GuildModel = model("guild", GuildSchema);
 
 export { GuildModel };

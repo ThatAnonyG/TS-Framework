@@ -1,4 +1,4 @@
-export class Event {
+export class BotEvent {
   public name: string;
 
   constructor(name: string) {

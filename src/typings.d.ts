@@ -1,25 +1,25 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
-declare module 'discord.js' {
-	interface Message {
-		em(content: string): Promise<Message>;
-	}
+declare module "discord.js" {
+  interface Message {
+    em(content: string): Promise<Message>;
+  }
 
-	interface Guild {
-		db?: Document;
+  interface Guild {
+    db?: Document;
 
-		_init(): void;
-	}
+    _init(): void;
+  }
 
-	interface User {
-		db?: Document;
+  interface User {
+    db?: Document;
 
-		_init(): void;
-	}
+    _init(): void;
+  }
 
-	interface GuildMember {
-		db?: Document;
+  interface GuildMember {
+    db?: Document;
 
-		_init(): void;
-	}
+    _init(): void;
+  }
 }

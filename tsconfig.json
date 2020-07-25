@@ -9,6 +9,7 @@
     "strict": true,
     "strictNullChecks": true,
     "noImplicitThis": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true
   },
   "files": ["./src/typings.d.ts"],

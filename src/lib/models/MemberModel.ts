@@ -1,10 +1,10 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const MemberSchema = new Schema({
-	gid: String,
-	id: String
+  gid: String,
+  id: String,
 });
 
-const MemberModel = model('member', MemberSchema);
+const MemberModel = model("member", MemberSchema);
 
 export { MemberModel };
