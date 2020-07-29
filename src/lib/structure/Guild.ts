@@ -1,27 +1,22 @@
 import { Structures } from "discord.js";
-import { GuildModel } from "../models/GuildModel";
-import { Document } from "mongoose";
+import { GuildEntity } from "../models/GuildModel";
 
 export default () => {
   Structures.extend(
     "Guild",
     (Guild) =>
       class extends Guild {
-        public db?: Document;
+        public db?: GuildEntity;
 
-        constructor() {
+        public constructor() {
           super(arguments[0], arguments[1]);
+          (async () => await this._init())();
         }
 
-        public _init() {
-          GuildModel.findOne({ id: this.id }, (err, doc) => {
-            if (err) throw err;
-            this.db =
-              doc ||
-              new GuildModel({
-                id: this.id,
-              });
-          });
+        public async _init() {
+          this.db =
+            (await GuildEntity.findOne({ id: this.id })) ||
+            new GuildEntity(this.id);
         }
       }
   );

@@ -4,7 +4,7 @@ import { BaseManager } from "../BaseManager";
 export interface ICommandOption {
   aliases?: string[];
   description: string;
-  category: "info" | "fun" | "dev";
+  category?: "info" | "dev";
   cd?: number;
   userPerms?: PermissionResolvable[];
   botPerms?: PermissionResolvable[];
@@ -18,11 +18,10 @@ export class Command {
   public name: string;
   public aliases: string[];
   public description: string;
-  public category: "info" | "fun" | "dev";
+  public category: "info" | "dev";
   public cd: number;
   public userPerms: PermissionResolvable[];
   public botPerms: PermissionResolvable[];
-  public editable: boolean;
   public usage: string | string[];
   public example: string[];
 
@@ -30,11 +29,12 @@ export class Command {
     this.name = name;
     this.aliases = options.aliases || [];
     this.description = options.description;
-    this.category = options.category;
+    this.category = options.category || "dev";
     this.cd = options.cd || 0;
     this.userPerms = options.userPerms || [];
-    this.botPerms = options.botPerms || [];
-    this.editable = options.editable || false;
+    this.botPerms = options.botPerms
+      ? ["SEND_MESSAGES", ...options.botPerms]
+      : ["SEND_MESSAGES"];
     this.usage = options.usage || "No usage provided";
     this.example = options.example || [];
   }

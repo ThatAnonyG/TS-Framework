@@ -18,7 +18,10 @@ export class Bot extends BaseManager {
     });
   }
 
-  public botReload() {}
+  public botReload() {
+    this.destroy();
+    this.botStart();
+  }
 
   public botStop() {
     try {

@@ -15,7 +15,7 @@ export default class EMessage extends BotEvent {
     if (!message.author.db) message.author._init();
     if (!message.member!.db) message.member!._init();
 
-    const prefix = bot.getConfig("prefix");
+    const prefix = message.guild.db!.prefix;
 
     // A safety check
     if (!message.guild.me!.hasPermission("SEND_MESSAGES")) return;
@@ -27,6 +27,41 @@ export default class EMessage extends BotEvent {
 
     // Trying to get the command
     const command = bot.handler.getCmd(key);
-    if (command) await command.run(message, args);
+    if (!command) return;
+
+    if (
+      command.userPerms.every((p) =>
+        message.member!.hasPermission(p, {
+          checkAdmin: true,
+          checkOwner: true,
+        })
+      ) &&
+      command.botPerms.every((p) =>
+        message.guild!.me!.hasPermission(p, { checkAdmin: true })
+      )
+    ) {
+      await (command as any).run(message, args);
+    } else {
+      let perms = message.embed
+        .setTitle(`Not Enough Permissions`)
+        .setColor("#d94337")
+        .addField(
+          "User Perms",
+          `Users need the following permission(s) to run this command: ${
+            command.userPerms.length
+              ? command.userPerms.map((x) => `\`${x}\``).join(" | ")
+              : `\`NONE\``
+          }`
+        )
+        .addField(
+          "Bot Perms",
+          `I need the following permission(s) to run this command: ${
+            command.botPerms.length
+              ? command.botPerms.map((x) => `\`${x}\``).join(" | ")
+              : `\`NONE\``
+          }`
+        );
+      message.channel.send(perms).catch();
+    }
   }
 }

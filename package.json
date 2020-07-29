@@ -9,10 +9,10 @@
 		"chalk": "^4.1.0",
 		"discord.js": "^12.2.0",
 		"dotenv": "^8.2.0",
-		"mongoose": "^5.9.25"
+		"mongodb": "^3.5.9",
+		"typeorm": "^0.2.24"
 	},
 	"devDependencies": {
-		"@types/mongoose": "^5.7.32",
 		"@types/node": "^14.0.13",
 		"@types/ws": "^7.2.6"
 	}

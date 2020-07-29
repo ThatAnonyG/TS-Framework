@@ -1,9 +1,20 @@
-import { model, Schema } from "mongoose";
+import {
+  Entity,
+  BaseEntity,
+  ObjectIdColumn,
+  PrimaryColumn,
+  ObjectID,
+  Column,
+} from "typeorm";
+import { Snowflake } from "discord.js";
 
-const UserSchema = new Schema({
-  id: String,
-});
+@Entity("users")
+export class UserEntity extends BaseEntity {
+  @ObjectIdColumn() public _id?: ObjectID;
+  @PrimaryColumn() public id: Snowflake;
 
-const UserModel = model("user", UserSchema);
-
-export { UserModel };
+  constructor(id: Snowflake) {
+    super();
+    this.id = id;
+  }
+}

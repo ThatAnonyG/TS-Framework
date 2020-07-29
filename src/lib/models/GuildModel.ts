@@ -1,9 +1,21 @@
-import { model, Schema } from "mongoose";
+import {
+  Entity,
+  BaseEntity,
+  ObjectIdColumn,
+  PrimaryColumn,
+  ObjectID,
+  Column,
+} from "typeorm";
+import { Snowflake } from "discord.js";
 
-const GuildSchema = new Schema({
-  id: String,
-});
+@Entity("guilds")
+export class GuildEntity extends BaseEntity {
+  @ObjectIdColumn() public _id?: ObjectID;
+  @PrimaryColumn() public id: Snowflake;
+  @Column() public prefix: string = "!";
 
-const GuildModel = model("guild", GuildSchema);
-
-export { GuildModel };
+  constructor(id: Snowflake) {
+    super();
+    this.id = id;
+  }
+}

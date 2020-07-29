@@ -1,27 +1,23 @@
 import { Structures } from "discord.js";
-import { UserModel } from "../models/UserModel";
-import { Document } from "mongoose";
+import { UserEntity } from "../models/UserModel";
 
 export default () => {
   Structures.extend(
     "User",
     (User) =>
       class extends User {
-        public db?: Document;
+        public db?: UserEntity;
 
-        constructor() {
+        public constructor() {
           super(arguments[0], arguments[1]);
+          (async () => await this._init())();
         }
 
-        public _init() {
-          UserModel.findOne({ id: this.id }, (err, doc) => {
-            if (err) throw err;
-            this.db =
-              doc ||
-              new UserModel({
-                id: this.id,
-              });
-          });
+        public async _init() {
+          this.db =
+            (await UserEntity.findOne({
+              id: this.id,
+            })) || new UserEntity(this.id);
         }
       }
   );

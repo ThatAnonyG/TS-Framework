@@ -18,6 +18,7 @@ export class Handler {
             let { default: command } = require(`${dir}/${category}/${cmd}`);
             command = new command();
             command.bot = this.manager;
+            command.category = category;
             this.manager.commands.set(command.name, command);
           } catch (e) {
             this.manager.utils.log(`[${cmd}] => ${e.message}`, "error");

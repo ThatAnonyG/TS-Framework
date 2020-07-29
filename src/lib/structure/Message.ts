@@ -8,6 +8,10 @@ export default () => {
         public em(content: string) {
           return this.channel.send(new MessageEmbed().setDescription(content));
         }
+
+        get embed() {
+          return new MessageEmbed();
+        }
       }
   );
 };

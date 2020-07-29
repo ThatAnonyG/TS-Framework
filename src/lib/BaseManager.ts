@@ -4,10 +4,12 @@ require("dotenv").config({
 import { Client, Collection } from "discord.js";
 import { Handler } from "./managers/Handler";
 import { Utils } from "./utils/Utils";
-import { connect } from "mongoose";
+import { createConnection } from "typeorm";
 import { Command } from "./structure/command";
-import { readdirSync } from "fs";
 import config from "../config.json";
+import { GuildEntity } from "./models/GuildModel";
+import { UserEntity } from "./models/UserModel";
+import { MemberEntity } from "./models/MemberModel";
 
 export class BaseManager extends Client {
   private TOKEN: string;
@@ -37,9 +39,13 @@ export class BaseManager extends Client {
   }
 
   public loadMongo() {
-    connect(this.getConfig("mongo"), {
+    createConnection({
+      type: "mongodb",
+      url: this.config.get("mongo") as string,
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      entities: [GuildEntity, UserEntity, MemberEntity],
+      synchronize: true,
     })
       .then(() => this.utils.log("[MongoDB] => Connected!"))
       .catch((e) => {
@@ -49,28 +55,5 @@ export class BaseManager extends Client {
 
   public getConfig(key: string) {
     return this.config[this.type][key];
-  }
-
-  public loadCmd(cmd: string) {
-    const cats = readdirSync(__dirname + "/../bot/commands/").filter(
-      (f) => !f.endsWith(".js")
-    );
-
-    for (let cat of cats) {
-      const files = readdirSync(__dirname + `/../bot/commands/${cat}/`)
-        .filter((f) => f.endsWith(".js"))
-        .map((x) => x.split(".").shift());
-      if (!files.map((f) => f!.toLowerCase()).includes(cmd.toLowerCase()))
-        continue;
-
-      let { default: command } = require(__dirname +
-        `/../bot/commands/${cat}/${cmd}`);
-      if (!command) this.utils.log("No command file found!", "error");
-
-      command = new command();
-      command.bot = this;
-      this.commands.set(command.name, command);
-      return command;
-    }
   }
 }
