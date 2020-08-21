@@ -4,7 +4,6 @@ import {
   ObjectIdColumn,
   PrimaryColumn,
   ObjectID,
-  Column,
 } from "typeorm";
 import { Snowflake } from "discord.js";
 
